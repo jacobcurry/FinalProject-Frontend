@@ -23,7 +23,7 @@ const Container = styled.div`
   flex-direction: column;
   color: #c8c4c4;
   width: 100%;
-  transition: all 1s;
+  transition: all 5s ease-in-out;
   img {
     height: 20rem;
   }

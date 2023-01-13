@@ -14,8 +14,8 @@ const ChatContainer = ({ currentChat, currentUser, socket }) => {
 
   const getMessages = async () => {
     const response = await axios.post(getAllMessagesRoute, {
-      from: currentUser._id,
-      to: currentChat._id,
+      from: currentUser.user_id,
+      to: currentChat.user_id,
     });
     setMessages(response.data);
   };
@@ -27,14 +27,14 @@ const ChatContainer = ({ currentChat, currentUser, socket }) => {
   }, [currentChat]);
   const handleSendMsg = async (msg) => {
     await axios.post(sendMessageRoute, {
-      from: currentUser._id,
-      to: currentChat._id,
+      from: currentUser.user_id,
+      to: currentChat.user_id,
       message: msg,
     });
 
     socket.current.emit("send-msg", {
-      to: currentChat._id,
-      from: currentUser._id,
+      to: currentChat.user_id,
+      from: currentUser.user_id,
       message: msg,
     });
 
@@ -68,7 +68,7 @@ const ChatContainer = ({ currentChat, currentUser, socket }) => {
             <div className="user-details">
               <div className="avatar">
                 <img
-                  src={`data:image/svg+xml;base64,${currentChat.avatarImage}`}
+                  src={`data:image/svg+xml;base64,${currentChat.avatarimage}`}
                   alt="avatar"
                 />
               </div>
@@ -143,6 +143,16 @@ const Container = styled.div`
     flex-direction: column;
     gap: 1rem;
     overflow: auto;
+    ::-webkit-scrollbar {
+      width: 3px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #888;
+      border-radius: 1.5px;
+    }
     .message {
       display: flex;
       align-items: center;

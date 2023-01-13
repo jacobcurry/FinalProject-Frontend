@@ -20,7 +20,7 @@ const Contacts = ({
 
   useEffect(() => {
     if (currentUser) {
-      setCurrentUserImage(currentUser.avatarImage);
+      setCurrentUserImage(currentUser.avatarimage);
       setCurrentUsername(currentUser.username);
     }
   }, [currentUser]);
@@ -79,13 +79,15 @@ const Contacts = ({
                     }`}
                     key={index}
                     onClick={() => {
-                      closeContacts();
+                      if (window.innerWidth < 1000) {
+                        closeContacts();
+                      }
                       changeCurrentChat(index, contact);
                     }}
                   >
                     <div className="avatar">
                       <img
-                        src={`data:image/svg+xml;base64,${contact.avatarImage}`}
+                        src={`data:image/svg+xml;base64,${contact.avatarimage}`}
                         alt="avatar"
                       />
                     </div>
@@ -114,11 +116,15 @@ const Container = styled.div`
   width: 100%;
   max-width: 320px;
   transition: all 0.7s;
-
+  z-index: 100;
   @media screen and (max-width: 1000px) {
     position: absolute;
   }
-
+  @media screen and (min-width: 1000px) {
+    .close-btn {
+      display: none;
+    }
+  }
   .close-btn {
     cursor: pointer;
     position: absolute;

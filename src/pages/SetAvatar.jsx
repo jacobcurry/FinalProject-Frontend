@@ -37,12 +37,12 @@ const SetAvatar = () => {
       toast.error("Please select an avatar", toastOptions);
     } else {
       const user = await JSON.parse(localStorage.getItem("user"));
-      const { data } = await axios.post(`${setAvatarRoute}/${user._id}`, {
+      const { data } = await axios.post(`${setAvatarRoute}/${user.user_id}`, {
         image: avatars[selectedAvatar],
       });
       if (data.isSet) {
-        user.isAvatarImageSet = true;
-        user.avatarImage = data.image;
+        user.isavatarimageset = true;
+        user.avatarimage = data.image;
         localStorage.setItem("user", JSON.stringify(user));
         navigate("/");
       } else {

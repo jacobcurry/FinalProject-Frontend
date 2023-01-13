@@ -36,14 +36,16 @@ const Chat = () => {
   useEffect(() => {
     if (currentUser) {
       socket.current = io(host);
-      socket.current.emit("add-user", currentUser._id);
+      socket.current.emit("add-user", currentUser.user_id);
     }
   }, [currentUser]);
 
   const getAllUsers = async () => {
     if (currentUser) {
-      if (currentUser.isAvatarImageSet) {
-        const { data } = await axios.get(`${allUsersRoute}/${currentUser._id}`);
+      if (currentUser.isavatarimageset) {
+        const { data } = await axios.get(
+          `${allUsersRoute}/${currentUser.user_id}`
+        );
         setContacts(data);
       } else {
         navigate("/setavatar");

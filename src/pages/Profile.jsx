@@ -42,15 +42,18 @@ const Profile = () => {
     e.preventDefault();
     if (handleValidation()) {
       const { email, username } = values;
-      const { data } = await axios.post(`${EditUserRoute}/${currentUser._id}`, {
-        username,
-        email,
-      });
+      const { data } = await axios.post(
+        `${EditUserRoute}/${currentUser.user_id}`,
+        {
+          username,
+          email,
+        }
+      );
       if (data.status === false) {
         toast.error(data.msg, toastOptions);
       }
       if (data.status === true) {
-        localStorage.setItem("user", JSON.stringify(data.userData));
+        localStorage.setItem("user", JSON.stringify(data.user));
         navigate("/");
       }
     }
@@ -103,7 +106,7 @@ const Profile = () => {
               <div className="change-avatar">
                 {currentUser && (
                   <img
-                    src={`data:image/svg+xml;base64,${currentUser.avatarImage}`}
+                    src={`data:image/svg+xml;base64,${currentUser.avatarimage}`}
                     alt="avatar"
                   />
                 )}
