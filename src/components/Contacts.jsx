@@ -6,16 +6,19 @@ import { useNavigate } from "react-router-dom";
 
 const Contacts = ({
   contacts,
+  friends,
   currentUser,
   changeChat,
   closeContacts,
   closeSideBar,
+  setShowUsers,
+  setCurrentSelected,
+  currentSelected,
 }) => {
   const navigate = useNavigate();
 
   const [currentUsername, setCurrentUsername] = useState(undefined);
   const [currentUserImage, setCurrentUserImage] = useState(undefined);
-  const [currentSelected, setCurrentSelected] = useState(undefined);
   const [showContactsSection, setShowContactsSection] = useState(true);
 
   useEffect(() => {
@@ -68,10 +71,18 @@ const Contacts = ({
                 />
                 Your messages
               </p>
-              <AiOutlinePlus className="hide-plus plus" />
+              <AiOutlinePlus
+                className="plus"
+                onClick={() => {
+                  setShowUsers(true);
+                  if (window.innerWidth < 1000) {
+                    closeContacts();
+                  }
+                }}
+              />
             </div>
-            {showContactsSection &&
-              contacts.map((contact, index) => {
+            {showContactsSection && friends.length > 0 ? (
+              friends.map((contact, index) => {
                 return (
                   <div
                     className={`contact ${
@@ -83,6 +94,7 @@ const Contacts = ({
                         closeContacts();
                       }
                       changeCurrentChat(index, contact);
+                      setShowUsers(false);
                     }}
                   >
                     <div className="avatar">
@@ -96,7 +108,12 @@ const Contacts = ({
                     </div>
                   </div>
                 );
-              })}
+              })
+            ) : (
+              <p className="no-friends">
+                Click the plus to start your first message...
+              </p>
+            )}
           </div>
           <div className="brand">
             <img src={Logo} alt="logo" />
@@ -117,7 +134,7 @@ const Container = styled.div`
   max-width: 320px;
   transition: all 0.7s;
   z-index: 100;
-  @media screen and (max-width: 1000px) {
+  @media screen and (max-width: 999px) {
     position: absolute;
   }
   @media screen and (min-width: 1000px) {
@@ -129,6 +146,13 @@ const Container = styled.div`
     cursor: pointer;
     position: absolute;
     left: 270px;
+  }
+
+  .no-friends {
+    color: #c8c4c4;
+    padding: 1rem;
+    text-align: center;
+    font-size: 1.4rem;
   }
 
   .brand {
@@ -152,12 +176,6 @@ const Container = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-
-    &:hover {
-      .hide-plus {
-        display: block;
-      }
-    }
   }
 
   .plus {
@@ -165,9 +183,9 @@ const Container = styled.div`
     color: #c8c4c4;
     margin-right: 0.8rem;
     font-size: 1.5rem;
-  }
-  .hide-plus {
-    display: none;
+    &:hover {
+      transform: scale(1.2);
+    }
   }
 
   .close-div {

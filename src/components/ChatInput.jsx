@@ -5,10 +5,11 @@ import { IoMdSend } from "react-icons/io";
 import { BsEmojiSmileFill } from "react-icons/bs";
 
 const ChatInput = ({ handleSendMsg }) => {
-  const closeEmojiRef = useRef(null);
+  const closeEmojiRef = useRef();
 
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [msg, setMsg] = useState("");
+  const [width, setWidth] = useState(window.innerWidth);
 
   const handleEmojiPickerShow = () => {
     setShowEmojiPicker(!showEmojiPicker);
@@ -37,21 +38,27 @@ const ChatInput = ({ handleSendMsg }) => {
     document.addEventListener("mousedown", handleShowEmoji);
   }, [closeEmojiRef]);
 
+  window.addEventListener("resize", () => {
+    setWidth(window.innerWidth);
+  });
+
   return (
     <>
       <Container>
-        <div className="button-container">
-          <div className="emoji" ref={closeEmojiRef}>
-            <BsEmojiSmileFill onClick={handleEmojiPickerShow} />
-            {showEmojiPicker && (
-              <EmojiPicker
-                width="285px"
-                theme="dark"
-                onEmojiClick={handleEmojiClick}
-              />
-            )}
+        {width > 500 && (
+          <div className="button-container">
+            <div className="emoji" ref={closeEmojiRef}>
+              <BsEmojiSmileFill onClick={handleEmojiPickerShow} />
+              {showEmojiPicker && (
+                <EmojiPicker
+                  width="285px"
+                  theme="dark"
+                  onEmojiClick={handleEmojiClick}
+                />
+              )}
+            </div>
           </div>
-        </div>
+        )}
         <form onSubmit={sendChat} className="input-container">
           <input
             type="text"

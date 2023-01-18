@@ -91,7 +91,6 @@ const Profile = () => {
           <p className="profile-title">Profile</p>
           {currentUser && (
             <div className="current-user">
-              <p>{currentUser.username}</p>
               <Logout />
             </div>
           )}

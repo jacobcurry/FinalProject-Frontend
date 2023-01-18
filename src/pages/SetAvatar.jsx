@@ -113,6 +113,7 @@ const SetAvatar = () => {
           </div>
           <div className="two-btns">
             <button onClick={getAvatars} className={`refresh`}>
+              New Avatars
               <BiRefresh
                 className={`${btnIsLoading ? "btn-loading" : ""}`}
                 size="45px"
@@ -181,11 +182,17 @@ const Container = styled.div`
     z-index: 100;
     background-color: #535ffd;
     color: white;
-    padding: 0.5rem;
+    padding: 0.5rem 2rem;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
     border: none;
     font-weight: bold;
     cursor: pointer;
     border-radius: 0.4rem;
+    font-size: 1rem;
+    text-transform: uppercase;
     transition: 0.5s ease-in-out;
     &:hover {
       background-color: #8088ff;
@@ -205,7 +212,10 @@ const Container = styled.div`
     z-index: 100;
     background-color: #535ffd;
     color: white;
-    padding: 1rem 2rem;
+    padding: 0.5rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border: none;
     font-weight: bold;
     cursor: pointer;
@@ -223,6 +233,9 @@ const Container = styled.div`
     }
     .two-btns {
       flex-direction: column;
+    }
+    .refresh {
+      padding: 0.2rem 2rem;
     }
   }
 `;

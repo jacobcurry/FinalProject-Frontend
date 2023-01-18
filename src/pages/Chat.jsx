@@ -2,10 +2,11 @@ import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { allUsersRoute, host } from "../utils/APIRoutes";
+import { allUsersRoute, getFriendsRoute, host } from "../utils/APIRoutes";
 import Contacts from "../components/Contacts";
 import Welcome from "../components/Welcome";
 import ChatContainer from "../components/ChatContainer";
+import AddUser from "../components/AddUser";
 import { io } from "socket.io-client";
 import { GiHamburgerMenu } from "react-icons/gi";
 
@@ -15,10 +16,13 @@ const Chat = () => {
   const navigate = useNavigate();
 
   const [contacts, setContacts] = useState([]);
+  const [friends, setFriends] = useState([]);
   const [currentUser, setCurrentUser] = useState(undefined);
   const [currentChat, setCurrentChat] = useState(undefined);
   const [isLoaded, setIsLoaded] = useState(false);
   const [closeSideBar, setCloseSideBar] = useState(true);
+  const [showUsers, setShowUsers] = useState(false);
+  const [currentSelected, setCurrentSelected] = useState(undefined);
 
   const closeContacts = () => {
     setCloseSideBar(!closeSideBar);
@@ -53,12 +57,27 @@ const Chat = () => {
     }
   };
 
+  const getFriends = async () => {
+    if (currentUser) {
+      if (currentUser.isavatarimageset) {
+        const { data } = await axios.get(
+          `${getFriendsRoute}/${currentUser.user_id}`
+        );
+        if (data.status === false) {
+          return;
+        }
+        setFriends(data.friends);
+      }
+    }
+  };
+
   const handleChatChange = (chat) => {
     setCurrentChat(chat);
   };
 
   useEffect(() => {
     getAllUsers();
+    getFriends();
   }, [currentUser]);
 
   return (
@@ -73,12 +92,24 @@ const Chat = () => {
         <Contacts
           closeContacts={closeContacts}
           contacts={contacts}
+          friends={friends}
           currentUser={currentUser}
           changeChat={handleChatChange}
           closeSideBar={closeSideBar}
+          setShowUsers={setShowUsers}
+          currentSelected={currentSelected}
+          setCurrentSelected={setCurrentSelected}
         />
-
-        {isLoaded && currentChat === undefined ? (
+        {showUsers ? (
+          <AddUser
+            getFriends={getFriends}
+            contacts={contacts}
+            currentUser={currentUser}
+            setShowUsers={setShowUsers}
+            setCloseSideBar={setCloseSideBar}
+            socket={socket}
+          />
+        ) : isLoaded && currentChat === undefined ? (
           <Welcome user={currentUser} />
         ) : (
           <ChatContainer
